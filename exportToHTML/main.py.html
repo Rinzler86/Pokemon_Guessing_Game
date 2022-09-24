@@ -1,0 +1,183 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #ed864a; font-weight: bold;}
+.s3 { color: #7ec3e6;}
+.s4 { color: #54b33e;}
+.s5 { color: #33ccff; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#131314">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">os</span>
+<span class="s0">import </span><span class="s1">tkinter</span>
+<span class="s0">import </span><span class="s1">tkinter </span><span class="s0">as </span><span class="s1">tk</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">*</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span><span class="s2">, </span><span class="s1">ImageTk</span>
+<span class="s0">import </span><span class="s1">numberz</span>
+<span class="s0">from </span><span class="s1">game_mechanics </span><span class="s0">import </span><span class="s1">WebImage</span><span class="s2">, </span><span class="s1">pokemon_call</span><span class="s2">, </span><span class="s1">display_image</span><span class="s2">, </span><span class="s1">check_selector</span>
+<span class="s0">import </span><span class="s1">pygame</span>
+
+<span class="s3">#Create window and attributes for sizing and title name</span>
+<span class="s1">root = tk.Tk()</span>
+<span class="s1">root.geometry(</span><span class="s4">'500x500+400+200'</span><span class="s1">)</span>
+<span class="s1">root.resizable(</span><span class="s0">False</span><span class="s2">, </span><span class="s0">False</span><span class="s1">)</span>
+<span class="s1">root.title(</span><span class="s4">&quot;Pokemon Guessing Game!&quot;</span><span class="s1">)</span>
+<span class="s1">root.config(bg=</span><span class="s4">'white'</span><span class="s1">)</span>
+<span class="s1">ico = Image.open(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">pikachu_face.png&quot;</span><span class="s1">)</span>
+<span class="s1">photo = ImageTk.PhotoImage(ico)</span>
+<span class="s1">root.wm_iconphoto(</span><span class="s0">False</span><span class="s2">, </span><span class="s1">photo)</span>
+
+<span class="s1">pygame.mixer.init()</span>
+
+<span class="s0">def </span><span class="s1">play_sound():</span>
+   <span class="s1">pygame.mixer.music.load(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">right-answer-ding-ding-sound-effect</span><span class="s0">\\</span><span class="s4">Right-answer-ding-ding-sound-effect.mp3&quot;</span><span class="s1">)</span>
+   <span class="s1">pygame.mixer.music.play()</span>
+
+
+<span class="s0">def </span><span class="s1">play_wrong():</span>
+   <span class="s1">pygame.mixer.music.load(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">mixkit-basketball-buzzer-1647.wav&quot;</span><span class="s1">)</span>
+   <span class="s1">pygame.mixer.music.play()</span>
+
+<span class="s3">#function for deleting textbox hint when mouse button is clicked</span>
+<span class="s0">def </span><span class="s1">click(event):</span>
+   <span class="s1">textbox.configure(state=NORMAL)</span>
+   <span class="s1">textbox.delete(</span><span class="s5">0</span><span class="s2">, </span><span class="s1">END)</span>
+   <span class="s1">textbox.unbind(</span><span class="s4">'&lt;Button-1&gt;'</span><span class="s2">, </span><span class="s1">clicked)</span>
+
+<span class="s3">#creating and placing pokemon logo</span>
+<span class="s1">pokemon_logo = Image.open(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">pokemon-logo-png-0.png&quot;</span><span class="s1">)</span>
+<span class="s1">resize_tuple = (</span><span class="s5">140</span><span class="s2">, </span><span class="s5">100</span><span class="s1">)</span>
+<span class="s1">resize_logo = pokemon_logo.resize(resize_tuple)</span>
+<span class="s1">test = ImageTk.PhotoImage(resize_logo)</span>
+
+<span class="s1">label1 = tkinter.Label(image=test</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s1">)</span>
+<span class="s1">label1.image = test</span>
+
+<span class="s3"># Position for pokemon logo</span>
+<span class="s1">label1.place(x=</span><span class="s5">180</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">0</span><span class="s1">)</span>
+
+<span class="s3">#creation and placement of grass graphic in bottom of application</span>
+<span class="s1">pokemon_grass = Image.open(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">long_grass.jpg&quot;</span><span class="s1">)</span>
+<span class="s1">resize_tuple_2 = (</span><span class="s5">500</span><span class="s2">, </span><span class="s5">200</span><span class="s1">)</span>
+<span class="s1">resize_logo_2 = pokemon_grass.resize(resize_tuple_2)</span>
+<span class="s1">test2 = ImageTk.PhotoImage(resize_logo_2)</span>
+
+<span class="s1">label2 = tkinter.Label(image=test2</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s1">)</span>
+<span class="s1">label2.image = test2</span>
+
+<span class="s3"># Position for grass graphic</span>
+<span class="s1">label2.place(x=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">340</span><span class="s1">)</span>
+
+<span class="s3">#creating and placing pokemon background</span>
+<span class="s1">pokemon_logo_3 = Image.open(</span><span class="s4">&quot;C:</span><span class="s0">\\</span><span class="s4">Users</span><span class="s0">\\</span><span class="s4">Zeb Duffey</span><span class="s0">\\</span><span class="s4">Downloads</span><span class="s0">\\</span><span class="s4">pokemon-backgrouund_cropped.jpg&quot;</span><span class="s1">)</span>
+<span class="s1">resize_tuple_3 = (</span><span class="s5">270</span><span class="s2">, </span><span class="s5">200</span><span class="s1">)</span>
+<span class="s1">resize_logo_3 = pokemon_logo_3.resize(resize_tuple_3)</span>
+<span class="s1">test_3 = ImageTk.PhotoImage(resize_logo_3)</span>
+
+<span class="s1">label3 = tkinter.Label(image=test_3</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s1">)</span>
+<span class="s1">label3.image = test_3</span>
+
+<span class="s3"># Position for pokemon logo</span>
+<span class="s1">label3.place(x=</span><span class="s5">230</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">250</span><span class="s1">)</span>
+
+
+<span class="s1">current_pokemon = </span><span class="s4">''</span>
+<span class="s1">current_name = []</span>
+<span class="s1">numberss = numberz.all</span>
+
+
+<span class="s0">def </span><span class="s1">start_press():</span>
+   <span class="s0">global </span><span class="s1">current_pokemon</span>
+   <span class="s0">global </span><span class="s1">indexP</span>
+   <span class="s1">pokemon = check_selector(var_1=var_1</span><span class="s2">, </span><span class="s1">var_2=var_2</span><span class="s2">, </span><span class="s1">var_3=var_3)</span>
+   <span class="s1">current_pokemon = pokemon</span>
+   <span class="s1">name = pokemon_call(name_or_num=pokemon)[</span><span class="s4">'name'</span><span class="s1">]</span>
+   <span class="s1">current_name.append(name)</span>
+   <span class="s3">#weight = pokemon_call(name_or_num=retrieve_name)['weight']</span>
+   <span class="s1">pokemon_sprite = pokemon_call(name_or_num=pokemon)[</span><span class="s4">'sprites'</span><span class="s1">][</span><span class="s4">'front_default'</span><span class="s1">]</span>
+   <span class="s1">put_in_quatations = </span><span class="s4">f'</span><span class="s0">{</span><span class="s1">pokemon_sprite</span><span class="s0">}</span><span class="s4">'</span>
+   <span class="s1">display_image(link=put_in_quatations)</span>
+   <span class="s1">start_button[</span><span class="s4">&quot;state&quot;</span><span class="s1">] = DISABLED</span>
+   <span class="s1">checkbox_1[</span><span class="s4">&quot;state&quot;</span><span class="s1">] = DISABLED</span>
+   <span class="s1">checkbox_2[</span><span class="s4">&quot;state&quot;</span><span class="s1">] = DISABLED</span>
+   <span class="s1">checkbox_3[</span><span class="s4">&quot;state&quot;</span><span class="s1">] = DISABLED</span>
+
+
+<span class="s1">textbox = Entry(width=</span><span class="s5">20</span><span class="s2">, </span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">14</span><span class="s1">)</span><span class="s2">, </span><span class="s1">justify=</span><span class="s4">'center'</span><span class="s2">, </span><span class="s1">fg=</span><span class="s4">'#2a75bb'</span><span class="s1">)</span>
+<span class="s1">textbox.place(x=</span><span class="s5">110</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">390</span><span class="s1">)</span>
+
+<span class="s1">score = </span><span class="s5">0</span>
+
+
+<span class="s0">def </span><span class="s1">get_pokemon(*args):</span>
+   <span class="s0">global </span><span class="s1">score</span>
+   <span class="s0">global </span><span class="s1">numberss</span>
+   <span class="s0">global </span><span class="s1">current_pokemon</span>
+   <span class="s1">entered = textbox.get().lower()</span>
+   <span class="s0">if </span><span class="s1">entered == current_name[</span><span class="s5">0</span><span class="s1">]:</span>
+      <span class="s1">play_sound()</span>
+      <span class="s1">current_name.pop()</span>
+      <span class="s1">numberss.remove(current_pokemon)</span>
+      <span class="s1">current_pokemon = </span><span class="s4">''</span>
+      <span class="s3">#numberss.pop(current_pokemon)</span>
+      <span class="s1">score += </span><span class="s5">1</span>
+      <span class="s1">score_label.config(text=</span><span class="s4">f'Score: </span><span class="s0">{</span><span class="s1">score</span><span class="s0">}</span><span class="s4">'</span><span class="s1">)</span>
+      <span class="s1">textbox.delete(</span><span class="s5">0</span><span class="s2">, </span><span class="s1">END)</span>
+      <span class="s1">start_press()</span>
+      <span class="s1">print(current_name)</span>
+   <span class="s0">else</span><span class="s1">:</span>
+      <span class="s1">play_wrong()</span>
+      <span class="s1">current_name.pop()</span>
+      <span class="s1">start_press()</span>
+      <span class="s1">textbox.delete(</span><span class="s5">0</span><span class="s2">, </span><span class="s1">END)</span>
+      <span class="s1">print(current_name)</span>
+
+
+<span class="s3"># Restarts the Whole Window</span>
+<span class="s3"># def restart():</span>
+<span class="s3">#    global root</span>
+<span class="s3">#    root.destroy()</span>
+<span class="s3">#    root = Tk()</span>
+<span class="s3">#    root.mainloop()</span>
+
+
+<span class="s1">enter_button = Button(text=</span><span class="s4">&quot;Enter&quot;</span><span class="s2">, </span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">15</span><span class="s1">)</span><span class="s2">, </span><span class="s1">command=get_pokemon)</span>
+<span class="s1">enter_button.place(x=</span><span class="s5">210</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">430</span><span class="s1">)</span>
+
+<span class="s1">start_button = Button(text=</span><span class="s4">&quot;Start&quot;</span><span class="s2">, </span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">15</span><span class="s1">)</span><span class="s2">, </span><span class="s1">command=start_press)</span>
+<span class="s1">start_button.place(x=</span><span class="s5">380</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">190</span><span class="s1">)</span>
+
+<span class="s3">#restart_button = Button(text=&quot;Reset&quot;, font=('Segoe Print', 15), command=restart)</span>
+<span class="s3">#restart_button.place(x=80, y=190)</span>
+
+<span class="s1">score_label = Label(text=</span><span class="s4">f'Score: </span><span class="s0">{</span><span class="s1">score</span><span class="s0">}</span><span class="s4">'</span><span class="s2">, </span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">15</span><span class="s1">)</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s1">)</span>
+<span class="s1">score_label.place(x=</span><span class="s5">360</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">20</span><span class="s1">)</span>
+
+<span class="s1">var_1 = tk.IntVar()</span>
+<span class="s1">var_2 = tk.IntVar()</span>
+<span class="s1">var_3 = tk.IntVar()</span>
+
+<span class="s1">checkbox_1 = tk.Checkbutton(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s4">'Generation 1'</span><span class="s2">,</span><span class="s1">variable=var_1</span><span class="s2">, </span><span class="s1">onvalue=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">offvalue=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s2">,</span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">11</span><span class="s1">) )</span>
+<span class="s1">checkbox_1.place(x=</span><span class="s5">350</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">100</span><span class="s1">)</span>
+
+<span class="s1">checkbox_2 = tk.Checkbutton(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s4">'Generation 2'</span><span class="s2">,</span><span class="s1">variable=var_2</span><span class="s2">, </span><span class="s1">onvalue=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">offvalue=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s2">,</span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">11</span><span class="s1">) )</span>
+<span class="s1">checkbox_2.place(x=</span><span class="s5">350</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">130</span><span class="s1">)</span>
+
+<span class="s1">checkbox_3 = tk.Checkbutton(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s4">'Generation 3'</span><span class="s2">,</span><span class="s1">variable=var_3</span><span class="s2">, </span><span class="s1">onvalue=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">offvalue=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">bg=</span><span class="s4">'white'</span><span class="s2">,</span><span class="s1">font=(</span><span class="s4">'Segoe Print'</span><span class="s2">, </span><span class="s5">11</span><span class="s1">) )</span>
+<span class="s1">checkbox_3.place(x=</span><span class="s5">350</span><span class="s2">, </span><span class="s1">y=</span><span class="s5">160</span><span class="s1">)</span>
+
+<span class="s3">#bind return to button_press as alternative to pushing enter button</span>
+<span class="s1">root.bind(</span><span class="s4">'&lt;Return&gt;'</span><span class="s2">, </span><span class="s1">get_pokemon)</span>
+
+<span class="s1">root.mainloop()</span></pre>
+</body>
+</html>

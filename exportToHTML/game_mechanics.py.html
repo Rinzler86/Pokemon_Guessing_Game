@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>game_mechanics.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #7ec3e6;}
+.s3 { color: #54b33e;}
+.s4 { color: #ed864a; font-weight: bold;}
+.s5 { color: #33ccff; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#131314">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+game_mechanics.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">requests</span>
+<span class="s0">import </span><span class="s1">urllib.request</span>
+<span class="s0">import </span><span class="s1">base64</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image </span><span class="s0">as </span><span class="s1">Imag</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import  </span><span class="s1">ImageTk</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">*</span>
+<span class="s0">import </span><span class="s1">io</span>
+<span class="s0">import </span><span class="s1">random</span>
+<span class="s0">import </span><span class="s1">numpy </span><span class="s0">as </span><span class="s1">np</span>
+
+
+<span class="s2">#API call</span>
+<span class="s0">import </span><span class="s1">numberz</span>
+
+
+<span class="s0">def </span><span class="s1">pokemon_call(name_or_num):</span>
+    <span class="s0">return </span><span class="s1">requests.get(url=</span><span class="s3">f'https://pokeapi.co/api/v2/pokemon/</span><span class="s0">{</span><span class="s1">name_or_num</span><span class="s0">}</span><span class="s3">/'</span><span class="s1">).json()</span>
+
+<span class="s2"># class for displaying url photos</span>
+<span class="s0">class </span><span class="s1">WebImage:</span>
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s4">, </span><span class="s1">url):</span>
+        <span class="s0">with </span><span class="s1">urllib.request.urlopen(url) </span><span class="s0">as </span><span class="s1">u:</span>
+            <span class="s1">raw_data = u.read()</span>
+        <span class="s1">self.image = PhotoImage(data=base64.encodebytes(raw_data))</span>
+        <span class="s1">image = Imag.open(io.BytesIO(raw_data))</span>
+        <span class="s1">self.image = ImageTk.PhotoImage(image)</span>
+
+    <span class="s0">def </span><span class="s1">get(self):</span>
+        <span class="s0">return </span><span class="s1">self.image</span>
+
+<span class="s0">def </span><span class="s1">display_image(link):</span>
+    <span class="s1">img = WebImage(link).get()</span>
+    <span class="s1">imagelab = Label(image=img</span><span class="s4">, </span><span class="s1">bg=</span><span class="s3">'yellow'</span><span class="s4">, </span><span class="s1">borderwidth=</span><span class="s5">5 </span><span class="s1">)</span>
+    <span class="s1">imagelab.image = img</span>
+    <span class="s1">imagelab.place(x=</span><span class="s5">205</span><span class="s4">, </span><span class="s1">y=</span><span class="s5">100</span><span class="s1">)</span>
+
+
+<span class="s0">def </span><span class="s1">check_selector(var_1</span><span class="s4">, </span><span class="s1">var_2</span><span class="s4">, </span><span class="s1">var_3):</span>
+    <span class="s0">if </span><span class="s1">(var_1.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_2.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_3.get() == </span><span class="s5">1</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">0</span><span class="s4">, </span><span class="s5">386</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+    <span class="s0">elif </span><span class="s1">(var_1.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_2.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_3.get() == </span><span class="s5">0</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">0</span><span class="s4">, </span><span class="s5">252</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+    <span class="s0">elif </span><span class="s1">(var_2.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_3.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_1.get() == </span><span class="s5">0</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">152</span><span class="s4">, </span><span class="s5">386</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+    <span class="s0">elif </span><span class="s1">(var_1.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_3.get() == </span><span class="s5">1</span><span class="s1">) &amp; (var_2.get() == </span><span class="s5">0</span><span class="s1">) :</span>
+        <span class="s1">print(</span><span class="s3">&quot;i dont know how to combine these 2 yet!&quot;</span><span class="s1">)</span>
+    <span class="s0">elif </span><span class="s1">(var_1.get() == </span><span class="s5">1</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">0</span><span class="s4">, </span><span class="s5">152</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+    <span class="s0">elif </span><span class="s1">(var_2.get() == </span><span class="s5">1</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">152</span><span class="s4">, </span><span class="s5">252</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+    <span class="s0">elif </span><span class="s1">(var_3.get() == </span><span class="s5">1</span><span class="s1">):</span>
+        <span class="s1">rand_range_151 = random.randrange(</span><span class="s5">252</span><span class="s4">, </span><span class="s5">386</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">numberz.all[rand_range_151]</span>
+</pre>
+</body>
+</html>
