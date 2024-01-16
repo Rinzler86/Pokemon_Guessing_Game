@@ -14,7 +14,7 @@ import numberz
 
 
 def pokemon_call(name_or_num):
-    return requests.get(url=f'https://pokeapi.co/api/v2/pokemon/{name_or_num}/').json()
+    return requests.get(url=f'https://pokeapi.co/api/v2/pokemon/{name_or_num}/', timeout=60).json(timeout=60)
 
 # class for displaying url photos
 class WebImage:
