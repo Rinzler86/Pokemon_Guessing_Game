@@ -5,12 +5,12 @@ from PIL import Image as Imag
 from PIL import  ImageTk
 from tkinter import *
 import io
-import random
 import numpy as np
 
 
 #API call
 import numberz
+import secrets
 
 
 def pokemon_call(name_or_num):
@@ -37,22 +37,22 @@ def display_image(link):
 
 def check_selector(var_1, var_2, var_3):
     if (var_1.get() == 1) & (var_2.get() == 1) & (var_3.get() == 1):
-        rand_range_151 = random.randrange(0, 386)
+        rand_range_151 = secrets.SystemRandom().randrange(0, 386)
         return numberz.all[rand_range_151]
     elif (var_1.get() == 1) & (var_2.get() == 1) & (var_3.get() == 0):
-        rand_range_151 = random.randrange(0, 252)
+        rand_range_151 = secrets.SystemRandom().randrange(0, 252)
         return numberz.all[rand_range_151]
     elif (var_2.get() == 1) & (var_3.get() == 1) & (var_1.get() == 0):
-        rand_range_151 = random.randrange(152, 386)
+        rand_range_151 = secrets.SystemRandom().randrange(152, 386)
         return numberz.all[rand_range_151]
     elif (var_1.get() == 1) & (var_3.get() == 1) & (var_2.get() == 0) :
         print("i dont know how to combine these 2 yet!")
     elif (var_1.get() == 1):
-        rand_range_151 = random.randrange(0, 152)
+        rand_range_151 = secrets.SystemRandom().randrange(0, 152)
         return numberz.all[rand_range_151]
     elif (var_2.get() == 1):
-        rand_range_151 = random.randrange(152, 252)
+        rand_range_151 = secrets.SystemRandom().randrange(152, 252)
         return numberz.all[rand_range_151]
     elif (var_3.get() == 1):
-        rand_range_151 = random.randrange(252, 386)
+        rand_range_151 = secrets.SystemRandom().randrange(252, 386)
         return numberz.all[rand_range_151]
