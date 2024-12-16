@@ -1,4 +1,3 @@
-import requests
 import urllib.request
 import base64
 from PIL import Image as Imag
@@ -11,10 +10,11 @@ import numpy as np
 
 #API call
 import numberz
+from security import safe_requests
 
 
 def pokemon_call(name_or_num):
-    return requests.get(url=f'https://pokeapi.co/api/v2/pokemon/{name_or_num}/').json()
+    return safe_requests.get(url=f'https://pokeapi.co/api/v2/pokemon/{name_or_num}/').json()
 
 # class for displaying url photos
 class WebImage:
